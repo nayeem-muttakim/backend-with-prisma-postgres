@@ -2,21 +2,26 @@ import express from "express";
 import { config } from "dotenv";
 import { connectDB, disconnectDB } from "./config/db.js";
 // Routes
-import bookRouter from "./routes/bookRoutes.js";
+import bookRoutes from "./routes/bookRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 config();
 connectDB();
+
 const app = express();
 
+//body parsing middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 //API Routes
-app.use("/book", bookRouter);
+app.use("/book", bookRoutes);
+app.use("/auth", authRoutes);
 
 const PORT = 5001;
 app.listen(PORT, () => {
   console.log(`Server running on PORT ${PORT}`);
 });
-
-
 
 //handle unhandled promise rejections (e.g., database connection errors)
 process.on("unhandledRejection", (err) => {
