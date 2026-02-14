@@ -5,13 +5,15 @@ import {
   updateWishlistItem,
 } from "../controllers/wishlistController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
+import { validateRequest } from "../middleware/validateRequest.js";
+import { addToWishListSchema } from "../validators/wishlistValidators.js";
 
 const router = express.Router();
 
 //middleware
 router.use(authMiddleware);
 
-router.post("/", addToWishList);
+router.post("/", validateRequest(addToWishListSchema), addToWishList);
 
 router.put("/:id", updateWishlistItem);
 
